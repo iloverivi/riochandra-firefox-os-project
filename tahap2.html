@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<script>
+		var i;
+		var X;
+		var keadaan = false;
+		
+		function geser(){
+			i++;
+			if(keadaan){
+				document.getElementById('gambar').style.left = (- 320 + 10 + i*10) + 'px';
+			}else{
+				document.getElementById('gambar').style.left = (0 - i*10) + 'px';
+			}
+			return i;
+		}
+		function cek(N){
+			if(N > 30){
+				keadaan = !(keadaan);
+				clearInterval(X);
+			}
+		}
+		function kerjakan(){
+			i = 0;
+			X = setInterval(function(){ cek(geser()); }, 10);
+		}
+	</script>
+	<style>
+		body{
+			padding: 0px;
+				padding-left: 10px;
+			margin: 10px;
+			background: #F1F1F1;
+		}
+		div.soal{
+			padding: 5px;
+			font-family: sans-serif;
+			border: 1px solid #DDDDDD;
+			background: #FFFFFF;
+		}
+		div.kepala{
+			padding: 5px;
+				padding-left:5px;
+			width: auto;
+			margin: -10px;
+				margin-bottom: 20px;
+			font-family: sans-serif;
+			border: 1px solid #DDDDDD;
+			background: #FFFFFF;
+	                box-shadow: 0px 10px 10px #D3D3D3;
+		}
+		div.badan{
+			padding: 10px;
+			width: auto;
+			margin: -10px;
+				margin-top: 20px;
+	                box-shadow: 0px -10px 10px #D3D3D3;
+			border: 1px solid #DDDDDD;
+			background: #FFFFFF;
+		}
+		div.kotak{
+			padding: 20px;
+			position: fixed;
+			width: auto;
+			background: #FFFFFF;
+	                box-shadow: 0px 10px 10px #DCDCDC;
+		}
+		div.menu_di_soal{
+			position: relative;
+			left: 40px;
+			top: -320px;
+			width: 220px;
+			height: 180px;
+			padding: 10px;
+		}
+		div.penutup{
+			position: relative;
+			left: 40px;
+			top: -320px;
+			width: 220px;
+			padding: 10px;
+			font-family: sans-serif;
+			color: #FFF;
+		}
+		input.jawaban{
+			padding: 4px;
+			font-size: 20px;
+			font-family: arial;
+			border: 2px solid #DCDCDC;
+		}
+		input.jawab{
+			margin: auto;
+				margin-top: 10px;
+			padding: 5px;
+			width: 100%;
+			border: 1px dashed #0000DD;
+			background: #0000DC;
+			color: #FFF;
+		}
+		input.jawab_kotak_lanjut{
+			margin: auto;
+				margin-top: 10px;
+			padding: 5px;
+			width: 100%;
+			border: 1px dashed #FFF;
+			background: #00CC00;
+			color: #FFF;
+		}
+		input.jawab_kotak_keluar{
+			margin: auto;
+				margin-top: 10px;
+				margin-bottom: 10px;
+			padding: 5px;
+			width: 100%;
+			border: 1px dashed #FFF;
+			background: #CC0000;
+			color: #FFF;
+		}
+		input.menu_di_soal_ayo{
+			margin: auto;
+				margin-top: 10px;
+			padding: 5px;
+			width: 100%;
+			border: 1px solid #CCC;
+			background: #00CC00;
+			color: #FFF;
+			box-shadow: 0px 0px 10px 3px #D3D3D3;
+		}
+		input.menu_di_soal_keluar{
+			margin: auto;
+				margin-top: 10px;
+				margin-bottom: 10px;
+			padding: 5px;
+			width: 100%;
+			border: 1px solid #CCC;
+			background: #CC0000;
+			color: #FFF;
+		}
+	</style>
+</head>
+
+<body onresize='lakukan()'>
+	<div id='kotak' class='kotak'>
+		<div>
+			<img src='images/benar.png' width='100%' />
+		</div>
+		<input type='submit' class='jawab_kotak_lanjut' value='Lanjut' onclick='f_kotak_lanjut()'></input>
+		<input type='submit' class='jawab_kotak_keluar' value='Keluar' onclick='sembunyi_kotak()'></input>
+	</div>
+	<div class='kepala' id='kepala'>
+	</div>
+	<div class='soal' id='soal'>
+	</div>
+	<div class='badan' id='badan'>
+		<input type='text' class='jawaban' id='jawaban' placeholder='Jawab disini ...' onclick='sedang_menulis()'></input>
+		<input type='submit' class='jawab' value='Jawab' id='jawab1' onclick='cek_jawab()'></input>
+	<div>
+	<div id='gambar' style='position: fixed; top:0px; left:0px;'>
+		<img src='images/pembuka1.png' width="100%" height="100%" onclick='kerjakan()' />
+		<div class='menu_di_soal' onclick='kerjakan()'>
+			<input type='submit' class='menu_di_soal_ayo' value='Ayo...!'></input>
+			<input type='submit' class='menu_di_soal_keluar' value='Keluar' onclick='ke_utama()'></input>
+		</div>
+	</div>
+	<div id='lat_bel' style="position: fixed; top:0px; left:0px; height:100%; width:100%; visibility:hidden; background:#000;" >&nbsp;</div>
+	<div id='penutup' style='position: fixed; top:0px; left:320px; height:100%; width:100%;' onclick='selesai()'>
+		<img src='images/pembuka1.png' width="100%" height="100%" />
+		<div class='penutup'>
+			Selamat Kamu Berhasil, Klik untuk lanjut...
+		</div>
+	</div>
+	<script>
+		var v_judul = new Array();
+		var v_soal = new Array();
+		var v_jawaban = new Array();
+		var s_judul, s_jawaban, s_soal, s_nomor;
+		
+		v_judul[1] = 'Contoh soal 1';
+		v_soal[1] = 'Ini adalah contoh soal yang pertama, mungkin soal ini agak tidak jelas bahkan tidak jelas sama sekali karena soal ini hanya untuk memperbanyak tulisan saja';
+		v_jawaban[1] = '1';
+		
+		v_judul[2] = 'segala pekerjaan dimulai dari sini';
+		v_soal[2] = 'apalagi untuk contoh yang satu ini merupakan contoh kedua yang pasti tidak berguna sekali';
+		v_jawaban[2] = '2';
+		
+		v_judul[3] = 'Apa pekerjaan ini?';
+		v_soal[3] = 'Sebuah mesin pencari yang sangat terkenal di jagat raya saat ini Google. Tidak ada satupun orang netizen yang melewatkan saat berselancar sebelum memulainya dari mesin pencari ini';
+		v_jawaban[3] = '3';
+		
+		v_judul[4] = 'Contoh soal 1';
+		v_soal[4] = 'Ini adalah contoh soal yang pertama, mungkin soal ini agak tidak jelas bahkan tidak jelas sama sekali karena soal ini hanya untuk memperbanyak tulisan saja';
+		v_jawaban[4] = '4';
+		
+		v_judul[5] = 'segala pekerjaan dimulai dari sini';
+		v_soal[5] = 'apalagi untuk contoh yang satu ini merupakan contoh kedua yang pasti tidak berguna sekali';
+		v_jawaban[5] = '5';
+		
+		v_judul[6] = 'Apa pekerjaan ini?';
+		v_soal[6] = 'Sebuah mesin pencari yang sangat terkenal di jagat raya saat ini Google. Tidak ada satupun orang netizen yang melewatkan saat berselancar sebelum memulainya dari mesin pencari ini';
+		v_jawaban[6] = '6';
+		
+		v_judul[7] = 'Apa pekerjaan ini?';
+		v_soal[7] = 'Sebuah mesin pencari yang sangat terkenal di jagat raya saat ini Google. Tidak ada satupun orang netizen yang melewatkan saat berselancar sebelum memulainya dari mesin pencari ini';
+		v_jawaban[7] = '7';
+		
+		v_judul[8] = 'Contoh soal 1';
+		v_soal[8] = 'Ini adalah contoh soal yang pertama, mungkin soal ini agak tidak jelas bahkan tidak jelas sama sekali karena soal ini hanya untuk memperbanyak tulisan saja';
+		v_jawaban[8] = '8';
+		
+		v_judul[9] = 'segala pekerjaan dimulai dari sini';
+		v_soal[9] = 'apalagi untuk contoh yang satu ini merupakan contoh kedua yang pasti tidak berguna sekali';
+		v_jawaban[9] = '9';
+		
+		v_judul[10] = 'Apa pekerjaan ini?';
+		v_soal[10] = 'Sebuah mesin pencari yang sangat terkenal di jagat raya saat ini Google. Tidak ada satupun orang netizen yang melewatkan saat berselancar sebelum memulainya dari mesin pencari ini';
+		v_jawaban[10] = '10';
+		
+		v_judul[11] = 'Contoh soal 1';
+		v_soal[11] = 'Ini adalah contoh soal yang pertama, mungkin soal ini agak tidak jelas bahkan tidak jelas sama sekali karena soal ini hanya untuk memperbanyak tulisan saja';
+		v_jawaban[11] = '11';
+		
+		v_judul[12] = 'segala pekerjaan dimulai dari sini';
+		v_soal[12] = 'apalagi untuk contoh yang satu ini merupakan contoh kedua yang pasti tidak berguna sekali';
+		v_jawaban[12] = '12';
+		
+		v_judul[13] = 'Apa pekerjaan ini?';
+		v_soal[13] = 'Sebuah mesin pencari yang sangat terkenal di jagat raya saat ini Google. Tidak ada satupun orang netizen yang melewatkan saat berselancar sebelum memulainya dari mesin pencari ini';
+		v_jawaban[13] = '13';
+		
+		v_judul[14] = 'Contoh soal 1';
+		v_soal[14] = 'Ini adalah contoh soal yang pertama, mungkin soal ini agak tidak jelas bahkan tidak jelas sama sekali karena soal ini hanya untuk memperbanyak tulisan saja';
+		v_jawaban[14] = '14';
+		
+		v_judul[15] = 'segala pekerjaan dimulai dari sini';
+		v_soal[15] = 'apalagi untuk contoh yang satu ini merupakan contoh kedua yang pasti tidak berguna sekali';
+		v_jawaban[15] = '15';
+		
+		var i;
+		var X;
+		var b_tutup = false;
+		
+		function geser_penutup(){
+			i++;
+			if(b_tutup)
+				document.getElementById('penutup').style.left = (0 - i*10) + 'px';
+			else
+				document.getElementById('penutup').style.left = (320 - i*10) + 'px';
+			return i;
+		}
+		function cek_penutup(N){
+			if(N > 31){
+				if(!b_tutup){
+					clearInterval(X);
+					b_tutup = !(b_tutup);
+				}
+				if(b_tutup && N > 40) window.location = 'utama.html';
+			}
+		}
+		function lakukan_penutupan(){
+			i = 0;
+			X = setInterval(function(){ cek_penutup(geser_penutup()); }, 5);
+		}
+		
+		function onrez(){
+			document.getElementById('jawaban').style.width = (screen.width - 45) + 'px';
+		}
+		function mulai_kotak(){
+			document.getElementById('kotak').style.width = Math.round(screen.width*0.68) + 'px';
+			document.getElementById('kotak').style.left = Math.round(screen.width*0.12) + 'px';
+			document.getElementById('kotak').style.height = Math.round(screen.height*0.68) + 'px';
+			document.getElementById('kotak').style.top = Math.round(screen.height*0.12) + 'px';
+		}
+		function sembunyi_kotak(){
+			document.getElementById('kotak').style.visibility = 'hidden';
+		}
+		function tampil_kotak(){
+			document.getElementById('kotak').style.visibility = 'visible';
+		}
+		function cek_jawab(){
+			t_jawaban = document.getElementById('jawaban').value;
+			if(t_jawaban == s_jawaban)
+				tampil_kotak();
+			else
+				document.getElementById('jawaban').style.background = '#FF7777';
+		}
+		function sedang_menulis(){
+			document.getElementById('jawaban').style.background = '#FFF';
+		}
+		function terbitkan(N){
+			if(N > 1){
+				lakukan_penutupan();
+			}else{
+				s_nomor = N;
+				s_soal = v_soal[N];
+				s_jawaban = v_jawaban[N];
+				s_judul = v_judul[N];
+				document.getElementById('kepala').innerHTML = s_judul;
+				document.getElementById('soal').innerHTML = s_soal;
+			}
+		}
+		
+		
+		function f_kotak_lanjut(){
+			document.getElementById('jawaban').value = '';
+			sembunyi_kotak();
+			terbitkan(s_nomor+1);
+		}
+		
+		function selesai(){
+			document.getElementById('jawaban').value = '';
+			sembunyi_kotak();
+			document.getElementById('lat_bel').style.visibility = 'visible';
+			lakukan_penutupan();
+		}
+		
+		function ke_utama(){
+			document.getElementById('jawaban').value = '';
+			sembunyi_kotak();
+			window.location = 'utama.html';
+		}
+		
+		function lakukan(){
+			onrez();
+			sembunyi_kotak();
+		}
+		terbitkan(1);
+		onrez();
+		mulai_kotak();
+		sembunyi_kotak();
+	</script>
+</body>
+
+</html>
