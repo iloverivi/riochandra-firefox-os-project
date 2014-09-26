@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<style>
+		body{
+			margin: 0px;
+				margin-top: 20px;
+				margin-bottom: 20px;
+			padding: 2px;
+			background: #111111;
+		}
+		div.utama{
+			position:relative;
+		}
+		img.gambar_menu{
+			position: relative;
+			background: #FFF;
+			margin:10px;
+				margin-top: 2px;
+				margin-bottom: 3px;
+			width: 290px;
+			box-shadow: 0px 0px 2px 1px #D3D3D3;
+			border-radius: 5px;
+		}
+	</style>
+	<script>
+		var i = 0;
+		var X;
+		function geser(N){
+			i++;
+			if (N != 1) document.getElementById('menu1').style.left = (0 - i*10) + 'px';
+			if (N != 2) document.getElementById('menu2').style.left = (0 - i*10) + 'px';
+			if (N != 3) document.getElementById('menu3').style.left = (0 - i*10) + 'px';
+			if (N != 4) document.getElementById('menu4').style.left = (0 - i*10) + 'px';
+			if (N != 5) document.getElementById('menu5').style.left = (0 - i*10) + 'px';
+			if (N != 6) document.getElementById('menu6').style.left = (0 - i*10) + 'px';
+			return i;
+		}
+		function cek(N, tujuan){
+			if(N > 50){
+				clearInterval(X);
+				window.location = tujuan;
+			}
+		}
+		function kerjakan(N, S){
+			X = setInterval(function(){ cek(geser(N), S); }, 5);
+		}
+	</script>
+</head>
+
+<body>
+	<div id='utama'>	
+		<img src='images/coba.png' width='100%' onclick="kerjakan(1, 'tahap1.html')" class='gambar_menu' id='menu1'/><br />
+		<img src='images/coba.png' width='100%' onclick="kerjakan(2, 'tahap2.html')" class='gambar_menu' id='menu2' /><br />
+		<img src='images/coba.png' width='100%' onclick="kerjakan(3, 'tahap3.html')" class='gambar_menu' id='menu3' /><br />
+		<img src='images/coba.png' width='100%' onclick="kerjakan(4, 'tahap4.html')" class='gambar_menu' id='menu4'/><br />
+		<img src='images/coba.png' width='100%' onclick="kerjakan(5, 'tahap5.html')" class='gambar_menu' id='menu5' /><br />
+		<img src='images/coba.png' width='100%' onclick="kerjakan(6, 'tahap6.html')" class='gambar_menu' id='menu6' /><br />
+	</div>
+</body>
+</html>
+	
